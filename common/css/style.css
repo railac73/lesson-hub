@@ -1,0 +1,269 @@
+/* ====================================================
+   공통 교육자료 스타일시트
+   ws_han/common/css/style.css
+   모든 교육자료 HTML에서 ../../common/css/style.css 로 참조
+   ==================================================== */
+
+/* === 폰트 === */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* === 리셋 === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #ffffff;
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  color: #101114;
+  min-height: 100vh;
+}
+
+/* === SPA View Controller === */
+.view {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.view.active {
+  display: block;
+  opacity: 1;
+}
+#slide-view.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* === HUB VIEW === */
+#hub-view {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 60px 80px 80px;
+}
+.page-title {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 42px; font-weight: 700;
+  color: #7132f5;
+  text-align: center; margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+.page-subtitle {
+  text-align: center; font-size: 16px; color: #686b82; margin-bottom: 50px;
+}
+
+/* === Sections === */
+.section { margin-bottom: 40px; }
+.section-header {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 20px; font-weight: 700; padding: 10px 20px;
+  border-left: 4px solid; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.num-range {
+  display: inline-block; font-size: 12px; font-weight: 600; color: white;
+  padding: 3px 10px; border-radius: 4px;
+}
+
+/* === Hub Grid === */
+.hub-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+
+/* === Hub Card === */
+.hub-card {
+  display: flex; flex-direction: column; gap: 8px; padding: 20px;
+  background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; text-decoration: none; transition: all 0.2s ease-out;
+}
+.hub-card:hover {
+  transform: translateY(-3px);
+}
+.hub-card:active {
+  transform: scale(0.97);
+}
+.hub-card .card-num {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 32px; font-weight: 700;
+}
+.hub-card .card-title { font-size: 15px; font-weight: 600; color: #101114; line-height: 1.4; }
+.hub-card .card-file { font-size: 11px; color: #9497a9; font-family: 'JetBrains Mono', monospace; margin-top: auto; }
+
+/* === 섹션별 색상 === */
+.section-intro .section-header { border-color: #7132f5; color: #7132f5; }
+.section-intro .num-range { background: #7132f5; }
+.section-intro .hub-card:hover { border-color: #7132f5; box-shadow: rgba(113, 50, 245, 0.12) 0px 8px 24px; }
+.section-intro .hub-card .card-num { color: #7132f5; }
+
+.section-1 .section-header { border-color: #686b82; color: #4b4d5f; }
+.section-1 .num-range { background: #686b82; }
+.section-1 .hub-card:hover { border-color: #686b82; box-shadow: rgba(104, 107, 130, 0.12) 0px 8px 24px; }
+.section-1 .hub-card .card-num { color: #686b82; }
+
+.section-2 .section-header { border-color: #149e61; color: #026b3f; }
+.section-2 .num-range { background: #149e61; }
+.section-2 .hub-card:hover { border-color: #149e61; box-shadow: rgba(20, 158, 97, 0.12) 0px 8px 24px; }
+.section-2 .hub-card .card-num { color: #149e61; }
+
+.section-outro .section-header { border-color: #7132f5; color: #7132f5; }
+.section-outro .num-range { background: linear-gradient(90deg, #7132f5, #855bfb); }
+.section-outro .hub-card:hover { border-color: #7132f5; box-shadow: rgba(113, 50, 245, 0.15) 0px 8px 24px; }
+.section-outro .hub-card .card-num { color: #7132f5; }
+
+/* === 슬라이드 뷰 테마 변수 === */
+#slide-view.section-intro { --theme-color: #7132f5; --theme-bg-soft: rgba(113, 50, 245, 0.05); }
+#slide-view.section-1 { --theme-color: #686b82; --theme-bg-soft: rgba(104, 107, 130, 0.05); }
+#slide-view.section-2 { --theme-color: #149e61; --theme-bg-soft: rgba(20, 158, 97, 0.05); }
+#slide-view.section-outro { --theme-color: #7132f5; --theme-bg-soft: rgba(113, 50, 245, 0.05); }
+
+/* === SLIDE VIEW === */
+.container {
+  width: 1280px;
+  height: 100%;
+  padding: 30px 80px 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 44px; font-weight: 700;
+  color: var(--theme-color);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+/* === Lucide Icons === */
+.slide-icon-hero {
+  width: 44px !important; height: 44px !important;
+  stroke-width: 1.5 !important;
+  color: var(--theme-color) !important;
+  margin-bottom: 12px; display: inline-block; vertical-align: middle;
+}
+.slide-icon-feature {
+  width: 36px !important; height: 36px !important;
+  stroke-width: 1.5 !important;
+  color: var(--theme-color) !important;
+  margin-bottom: 12px; display: inline-block; vertical-align: middle;
+}
+.slide-icon-item {
+  width: 20px !important; height: 20px !important;
+  stroke-width: 1.5 !important;
+  color: var(--theme-color) !important;
+  margin-right: 8px; display: inline-block; vertical-align: middle;
+}
+
+/* === hero-cards === */
+.cards {
+  display: flex; gap: 24px; margin-bottom: 24px; width: 100%;
+}
+.card-content-area {
+  display: flex; width: 100%; gap: 32px;
+}
+.card {
+  flex: 1; background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; padding: 24px; text-align: center;
+  position: relative; overflow: hidden;
+  transition: transform 0.2s ease-out;
+}
+.card:active { transform: scale(0.98); }
+.card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: var(--theme-color);
+}
+.card-text { font-size: 15px; font-weight: 500; line-height: 1.6; color: #101114; position: relative; z-index: 1; }
+.card-label {
+  display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; background: rgba(113,50,245,0.08); color: #7132f5;
+  position: relative; z-index: 1;
+}
+
+/* === grid === */
+.grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; width: 100%; max-width: 1000px;
+}
+.feature-card {
+  background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; padding: 20px 24px;
+  transition: all 0.2s ease-out;
+}
+.feature-card:hover { transform: translateY(-2px); border-color: var(--theme-color); box-shadow: rgba(113, 50, 245, 0.05) 0px 4px 16px; }
+.feature-card:active { transform: scale(0.98); }
+.feature-name { font-size: 17px; font-weight: 600; color: #101114; margin-bottom: 6px; }
+.feature-desc { font-size: 13.5px; color: #686b82; line-height: 1.5; }
+
+/* === step-single === */
+.step-container {
+  display: flex; gap: 40px; align-items: center; width: 100%;
+}
+.step-text-box {
+  flex: 0.8; background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; padding: 40px; height: 400px;
+  display: flex; flex-direction: column; justify-content: flex-start;
+}
+.step-badge {
+  display: inline-block; align-self: flex-start;
+  padding: 6px 14px; background: var(--theme-color);
+  color: white; border-radius: 8px;
+  font-size: 13.5px; font-weight: 700;
+  margin-bottom: 24px; letter-spacing: 0.5px; flex-shrink: 0;
+}
+.step-description {
+  font-size: 19px; line-height: 1.8; color: #101114;
+}
+.step-image-box {
+  flex: 1.4; border-radius: 0px; overflow: hidden;
+  border: none; background: transparent;
+  display: flex; justify-content: center; align-items: center;
+  padding: 0; height: 400px;
+}
+.step-image-box img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+
+/* === conclusion === */
+.conclusion {
+  text-align: center; padding: 20px 30px;
+  background: #f4f4f7; border: 1px solid var(--theme-color);
+  border-radius: 12px; width: 100%; max-width: 900px;
+  box-shadow: rgba(113, 50, 245, 0.03) 0px 4px 16px;
+}
+.conclusion-line {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 20px; font-weight: 600; line-height: 1.6;
+  color: var(--theme-color);
+}
+
+/* === 네비게이션 === */
+.slide-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid #dedee5;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+}
+.slide-nav-inner {
+  width: 1280px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 60px;
+}
+.slide-nav a {
+  text-decoration: none; font-size: 14px; font-weight: 600;
+  color: var(--theme-color);
+  transition: color 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.slide-nav a:hover { filter: brightness(0.85); }
+.slide-nav .nav-disabled {
+  font-size: 14px; font-weight: 600; color: #dedee5; cursor: default;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.slide-nav .nav-center a { color: #686b82; font-size: 13px; font-weight: 400; }
+.slide-nav .nav-center a:hover { color: #101114; }

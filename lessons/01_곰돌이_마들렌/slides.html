@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>곰돌이 마들렌 만들기 — 비주얼 자료</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #ffffff;
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  color: #101114;
+  min-height: 100vh;
+}
+
+/* SPA View controller */
+.view {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+.view.active {
+  display: block;
+  opacity: 1;
+}
+#slide-view.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* HUB VIEW STYLING */
+#hub-view {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 60px 80px 80px;
+}
+.page-title {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 42px; font-weight: 700;
+  color: #7132f5;
+  text-align: center; margin-bottom: 10px;
+  letter-spacing: -0.02em; /* DESIGN.md 자간 타이트 룰 */
+}
+.page-subtitle {
+  text-align: center; font-size: 16px; color: #686b82; margin-bottom: 50px;
+}
+
+/* Sections */
+.section { margin-bottom: 40px; }
+.section-header {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 20px; font-weight: 700; padding: 10px 20px;
+  border-left: 4px solid; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px;
+}
+.num-range {
+  display: inline-block; font-size: 12px; font-weight: 600; color: white;
+  padding: 3px 10px; border-radius: 4px;
+}
+
+/* Grid */
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.card {
+  display: flex; flex-direction: column; gap: 8px; padding: 20px;
+  background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; text-decoration: none; transition: all 0.2s ease-out;
+}
+.card:hover { 
+  transform: translateY(-3px); 
+}
+.card:active {
+  transform: scale(0.97); /* DESIGN.md 버튼/피처 클릭 마이크로-인터랙션 */
+}
+.card .card-num { 
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 32px; font-weight: 700; 
+}
+.card .card-title { font-size: 15px; font-weight: 600; color: #101114; line-height: 1.4; }
+.card .card-file { font-size: 11px; color: #9497a9; font-family: 'JetBrains Mono', monospace; margin-top: auto; }
+
+/* === 섹션별 색상 CSS 패턴 (허브 뷰 및 슬라이드 연계 컬러 변수) === */
+.section-intro .section-header { border-color: #7132f5; color: #7132f5; }
+.section-intro .num-range { background: #7132f5; }
+.section-intro .card:hover { border-color: #7132f5; box-shadow: rgba(113, 50, 245, 0.12) 0px 8px 24px; }
+.section-intro .card .card-num { color: #7132f5; }
+
+.section-1 .section-header { border-color: #686b82; color: #4b4d5f; }
+.section-1 .num-range { background: #686b82; }
+.section-1 .card:hover { border-color: #686b82; box-shadow: rgba(104, 107, 130, 0.12) 0px 8px 24px; }
+.section-1 .card .card-num { color: #686b82; }
+
+.section-2 .section-header { border-color: #149e61; color: #026b3f; }
+.section-2 .num-range { background: #149e61; }
+.section-2 .card:hover { border-color: #149e61; box-shadow: rgba(20, 158, 97, 0.12) 0px 8px 24px; }
+.section-2 .card .card-num { color: #149e61; }
+
+.section-outro .section-header { border-color: #7132f5; color: #7132f5; }
+.section-outro .num-range { background: linear-gradient(90deg, #7132f5, #855bfb); }
+.section-outro .card:hover { border-color: #7132f5; box-shadow: rgba(113, 50, 245, 0.15) 0px 8px 24px; }
+.section-outro .card .card-num { color: #7132f5; }
+
+
+/* === 슬라이드 뷰 섹션 연계 테마 변수 (동적으로 제목/아이콘/배지 색상 동화) === */
+#slide-view.section-intro {
+  --theme-color: #7132f5;
+  --theme-bg-soft: rgba(113, 50, 245, 0.05);
+}
+#slide-view.section-1 {
+  --theme-color: #686b82;
+  --theme-bg-soft: rgba(104, 107, 130, 0.05);
+}
+#slide-view.section-2 {
+  --theme-color: #149e61;
+  --theme-bg-soft: rgba(20, 158, 97, 0.05);
+}
+#slide-view.section-outro {
+  --theme-color: #7132f5;
+  --theme-bg-soft: rgba(113, 50, 245, 0.05);
+}
+
+
+/* SLIDE VIEW STYLING */
+.container {
+  width: 1280px;
+  height: 100%;
+  padding: 30px 80px 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--theme-color); /* 테마 변수 연동 */
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.02em; /* DESIGN.md display 타이틀 자간 단축 */
+  flex-shrink: 0;
+}
+
+/* Lucide Icon Sizing & Stroke-width (DESIGN.md 가이드 기반 정교화 + 테마 컬러 동기화) */
+.slide-icon-hero {
+  width: 44px !important;
+  height: 44px !important;
+  stroke-width: 1.5 !important; /* heavy 2.0 대신 1.5 룰 */
+  color: var(--theme-color) !important;
+  margin-bottom: 12px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.slide-icon-feature {
+  width: 36px !important;
+  height: 36px !important;
+  stroke-width: 1.5 !important;
+  color: var(--theme-color) !important;
+  margin-bottom: 12px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.slide-icon-item {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 1.5 !important;
+  color: var(--theme-color) !important;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 1. hero-cards */
+.cards {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+.card-content-area {
+  display: flex;
+  width: 100%;
+  gap: 32px;
+}
+.card {
+  flex: 1;
+  background: #f4f4f7;
+  border: 1px solid #dedee5;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease-out;
+}
+.card:active {
+  transform: scale(0.98);
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--theme-color); /* 테마 변수 연동 */
+}
+.card-text { font-size: 15px; font-weight: 500; line-height: 1.6; color: #101114; position: relative; z-index: 1; }
+.card-label {
+  display: inline-block; margin-top: 12px; padding: 3px 10px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; background: rgba(113,50,245,0.08); color: #7132f5; position: relative; z-index: 1;
+}
+
+/* 2. grid-2x2 & features */
+.grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; width: 100%; max-width: 1000px;
+}
+.feature-card {
+  background: #f4f4f7; border: 1px solid #dedee5;
+  border-radius: 12px; padding: 20px 24px;
+  transition: all 0.2s ease-out;
+}
+.feature-card:hover { transform: translateY(-2px); border-color: var(--theme-color); box-shadow: rgba(113, 50, 245, 0.05) 0px 4px 16px; }
+.feature-card:active { transform: scale(0.98); }
+.feature-name { font-size: 17px; font-weight: 600; color: #101114; margin-bottom: 6px; }
+.feature-desc { font-size: 13.5px; color: #686b82; line-height: 1.5; }
+
+/* 3. step-single (맞춤형 단일 단계 레이아웃 - 높이/비율 대폭 개선) */
+.step-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+}
+.step-text-box {
+  flex: 0.8;
+  background: #f4f4f7;
+  border: 1px solid #dedee5;
+  border-radius: 12px;
+  padding: 40px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.step-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 6px 14px;
+  background: var(--theme-color); /* 테마 변수 연동 */
+  color: white;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.step-description {
+  font-size: 19px;
+  line-height: 1.8;
+  color: #101114;
+}
+.step-image-box {
+  flex: 1.4;
+  border-radius: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  height: 400px;
+}
+.step-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 4. summary & conclusion */
+.conclusion {
+  text-align: center; padding: 20px 30px;
+  background: #f4f4f7; border: 1px solid var(--theme-color); /* 테마 변수 연동 */
+  border-radius: 12px; width: 100%; max-width: 900px;
+  box-shadow: rgba(113, 50, 245, 0.03) 0px 4px 16px;
+}
+.conclusion-line {
+  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+  font-size: 20px; font-weight: 600; line-height: 1.6;
+  color: var(--theme-color); /* 테마 변수 연동 */
+}
+
+/* 네비게이션 */
+.slide-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid #dedee5;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+}
+.slide-nav-inner {
+  width: 1280px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 60px;
+}
+.slide-nav a {
+  text-decoration: none; font-size: 14px; font-weight: 600;
+  color: var(--theme-color); /* 테마 변수 연동 */
+  transition: color 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.slide-nav a:hover { filter: brightness(0.85); }
+.slide-nav .nav-disabled { font-size: 14px; font-weight: 600; color: #dedee5; cursor: default; display: inline-flex; align-items: center; gap: 4px; }
+.slide-nav .nav-center a { color: #686b82; font-size: 13px; font-weight: 400; }
+.slide-nav .nav-center a:hover { color: #101114; }
+</style>
+</head>
+<body>
+
+<!-- 1. HUB VIEW -->
+<div id="hub-view" class="view active">
+  <h1 class="page-title">곰돌이 마들렌 만들기 — 비주얼 자료</h1>
+  <p class="page-subtitle">전체 13개 슬라이드 · 클릭하여 개별 페이지로 이동</p>
+
+  
+  <div class="section section-intro">
+    <div class="section-header"><span class="num-range">01-02</span> Intro</div>
+    <div class="grid">
+      
+      <a class="card" href="#slide-1">
+        <span class="card-num">01</span>
+        <span class="card-title">강사 소개: 한혜숙</span>
+        <span class="card-file">01-instructor-intro.html</span>
+      </a>
+      <a class="card" href="#slide-2">
+        <span class="card-num">02</span>
+        <span class="card-title">강사 이력 및 수상 경력</span>
+        <span class="card-file">02-instructor-history.html</span>
+      </a>
+    </div>
+  </div>
+  <div class="section section-1">
+    <div class="section-header"><span class="num-range">03-04</span> Prep</div>
+    <div class="grid">
+      
+      <a class="card" href="#slide-3">
+        <span class="card-num">03</span>
+        <span class="card-title">곰돌이 마들렌 만들기</span>
+        <span class="card-file">03-bear-madeline-intro.html</span>
+      </a>
+      <a class="card" href="#slide-4">
+        <span class="card-num">04</span>
+        <span class="card-title">재료 소개</span>
+        <span class="card-file">04-ingredients.html</span>
+      </a>
+    </div>
+  </div>
+  <div class="section section-2">
+    <div class="section-header"><span class="num-range">05-12</span> Steps</div>
+    <div class="grid">
+      
+      <a class="card" href="#slide-5">
+        <span class="card-num">05</span>
+        <span class="card-title">[1단계] 달걀과 설탕 섞기</span>
+        <span class="card-file">05-step-1.html</span>
+      </a>
+      <a class="card" href="#slide-6">
+        <span class="card-num">06</span>
+        <span class="card-title">[2단계] 가루류 체쳐 섞기</span>
+        <span class="card-file">06-step-2.html</span>
+      </a>
+      <a class="card" href="#slide-7">
+        <span class="card-num">07</span>
+        <span class="card-title">[3단계] 녹인 버터 혼합</span>
+        <span class="card-file">07-step-3.html</span>
+      </a>
+      <a class="card" href="#slide-8">
+        <span class="card-num">08</span>
+        <span class="card-title">[4단계] 짤주머니 휴지</span>
+        <span class="card-file">08-step-4.html</span>
+      </a>
+      <a class="card" href="#slide-9">
+        <span class="card-num">09</span>
+        <span class="card-title">[5단계] 틀에 반죽 팬닝</span>
+        <span class="card-file">09-step-5.html</span>
+      </a>
+      <a class="card" href="#slide-10">
+        <span class="card-num">10</span>
+        <span class="card-title">[6단계] 오븐 굽기</span>
+        <span class="card-file">10-step-6.html</span>
+      </a>
+      <a class="card" href="#slide-11">
+        <span class="card-num">11</span>
+        <span class="card-title">[7단계] 식힘망에서 식히기</span>
+        <span class="card-file">11-step-7.html</span>
+      </a>
+      <a class="card" href="#slide-12">
+        <span class="card-num">12</span>
+        <span class="card-title">[8단계] 초코펜으로 장식하기</span>
+        <span class="card-file">12-step-8.html</span>
+      </a>
+    </div>
+  </div>
+  <div class="section section-outro">
+    <div class="section-header"><span class="num-range">13</span> Outro</div>
+    <div class="grid">
+      
+      <a class="card" href="#slide-13">
+        <span class="card-num">13</span>
+        <span class="card-title">곰돌이 마들렌 완성!</span>
+        <span class="card-file">13-finished.html</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- 2. SLIDE VIEW -->
+<div id="slide-view" class="view">
+  <div class="container">
+    <h1 id="active-slide-title" class="title"></h1>
+    <div id="active-slide-content" style="width:100%; display:flex; justify-content:center; align-items:center;"></div>
+  </div>
+  
+  <nav class="slide-nav">
+    <div class="slide-nav-inner">
+      <div class="nav-left"><a href="#" id="nav-prev-btn">이전</a></div>
+      <div class="nav-center"><a href="#" id="nav-hub-btn">01 / 13</a></div>
+      <div class="nav-right"><a href="#" id="nav-next-btn">다음</a></div>
+    </div>
+  </nav>
+</div>
+
+<script>
+const slidesData = [{"title":"강사 소개: 한혜숙","html":"\n      <div style=\"display: flex; gap: 40px; width: 100%; height: 400px; align-items: stretch;\">\n        <div style=\"flex: 1; border-radius: 0px; overflow: hidden; border: none; background: transparent; padding: 0; height: 400px; display: flex; justify-content: center; align-items: center;\">\n          <img src=\"images/image1.png\" style=\"width: 100%; height: 100%; object-fit: contain;\">\n        </div>\n        <div style=\"flex: 1.1; display: flex; flex-direction: column; gap: 16px; height: 400px;\">\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;\">\n            <i data-lucide=\"chef-hat\" class=\"slide-icon-hero\"></i>\n            <h3 style=\"font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);\">한혜숙 강사</h3>\n            <p class=\"card-text\" style=\"font-size: 14.5px; line-height: 1.6; color: #101114;\">요리와 베이킹을 좋아해서 30년 야매 베이킹 인생에 마침표를 찍은 여자</p>\n            <span class=\"card-label\" style=\"margin-top: auto; align-self: flex-start; font-size: 11px; padding: 2px 8px;\">라일락의 작업실 대표</span>\n          </div>\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;\">\n            <i data-lucide=\"cake\" class=\"slide-icon-hero\"></i>\n            <h3 style=\"font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);\">전문 분야</h3>\n            <p class=\"card-text\" style=\"text-align: left; font-size: 14px; line-height: 1.6; color: #101114;\">\n              • 제과제빵 및 케이크 디자인<br>\n              • 천연 발효빵 마스터<br>\n              • 제과제빵 소품 전문 제작 및 베이킹 강의 전문\n            </p>\n            <span class=\"card-label\" style=\"margin-top: auto; align-self: flex-start; font-size: 11px; padding: 2px 8px;\">제과제빵 전문 강사</span>\n          </div>\n        </div>\n      </div>\n    ","sectionClass":"section-intro"},{"title":"강사 이력 및 수상 경력","html":"\n      <div style=\"display: flex; gap: 40px; width: 100%; height: 400px; align-items: stretch;\">\n        <!-- Left Timeline (60%) -->\n        <div style=\"flex: 1.2; display: flex; flex-direction: column; justify-content: space-between; height: 400px; padding: 8px 0;\">\n          <!-- Timeline Node 1: Education -->\n          <div style=\"display: flex; gap: 20px; align-items: flex-start;\">\n            <div style=\"display: flex; flex-direction: column; align-items: center; height: 100%;\">\n              <div style=\"width: 44px; height: 44px; border-radius: 50%; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); display: flex; align-items: center; justify-content: center; z-index: 2; flex-shrink:0;\">\n                <i data-lucide=\"graduation-cap\" style=\"width: 20px; height: 20px; color: var(--theme-color);\"></i>\n              </div>\n              <div style=\"width: 2px; flex-grow: 1; background: #dedee5; margin-top: 12px; min-height: 80px;\"></div>\n            </div>\n            <div style=\"flex: 1; padding-top: 4px;\">\n              <h3 style=\"font-size: 20px; font-weight: 700; color: #101114; margin-bottom: 12px; letter-spacing: -0.02em;\">교육 및 전문 수료</h3>\n              <p style=\"font-size: 14.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;\">\n                • 제빵기능사 및 천연발효빵 마스터 전문 자격<br>\n                • 아동요리지도사 1급 / 아동교육지도사 1급 자격 취득<br>\n                • 퍼스트아카데미 및 종로호텔제과직업전문학교 정규 과정 수료\n              </p>\n            </div>\n          </div>\n          \n          <!-- Timeline Node 2: Lectures -->\n          <div style=\"display: flex; gap: 20px; align-items: flex-start;\">\n            <div style=\"display: flex; flex-direction: column; align-items: center; height: 100%;\">\n              <div style=\"width: 44px; height: 44px; border-radius: 50%; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); display: flex; align-items: center; justify-content: center; z-index: 2; flex-shrink:0;\">\n                <i data-lucide=\"presentation\" style=\"width: 20px; height: 20px; color: var(--theme-color);\"></i>\n              </div>\n            </div>\n            <div style=\"flex: 1; padding-top: 4px;\">\n              <h3 style=\"font-size: 20px; font-weight: 700; color: #101114; margin-bottom: 12px; letter-spacing: -0.02em;\">주요 출강 및 강의</h3>\n              <p style=\"font-size: 14.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;\">\n                • 남한중, 산곡초, 서부초 학부모 초청 특강 강사<br>\n                • 감일초 학부모 베이킹 연수 및 5학년 생태교육 출강<br>\n                • 모카 파운드 케이크, 초코머핀, 수제 라자냐 등 출강\n              </p>\n            </div>\n          </div>\n        </div>\n\n        <!-- Right Highlights (40%) -->\n        <div style=\"flex: 0.8; display: flex; flex-direction: column; gap: 16px; height: 400px;\">\n          <!-- Representative Card -->\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; text-align: left; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; border-top: 4px solid var(--theme-color); border-radius: 12px; background: #f4f4f7; border-left: 1px solid #dedee5; border-right: 1px solid #dedee5; border-bottom: 1px solid #dedee5;\">\n            <i data-lucide=\"briefcase\" class=\"slide-icon-feature\"></i>\n            <h3 style=\"font-size: 18px; font-weight: 700; color: #101114; margin-bottom: 8px; letter-spacing: -0.02em;\">주요 공식 활동</h3>\n            <p style=\"font-size: 13.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;\">\n              • <strong>라일락의 작업실</strong> 대표 베이커<br>\n              • 하남발도르프 숲골어린이집 대표<br>\n              • 아동건강생활 코치 및 아토피 환아용 찐빵 등 연구\n            </p>\n          </div>\n          \n          <!-- Award Highlight Card -->\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; text-align: left; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); border-top: 4px solid var(--theme-color); border-radius: 12px; box-shadow: rgba(113, 50, 245, 0.04) 0px 4px 16px;\">\n            <i data-lucide=\"trophy\" class=\"slide-icon-feature\" style=\"color: var(--theme-color);\"></i>\n            <h3 style=\"font-size: 18px; font-weight: 700; color: var(--theme-color); margin-bottom: 8px; letter-spacing: -0.02em;\">대표 수상 이력</h3>\n            <p style=\"font-size: 13.5px; line-height: 2.2; color: #101114; font-weight: 500; letter-spacing: -0.01em;\">\n              • 2025 한벚재단 20년 지속 기부 감사장<br>\n              • 2024 대한민국 국회의원 표창장 수훈<br>\n              • 2023 하남시장 공식 감사장 수상\n            </p>\n          </div>\n        </div>\n      </div>\n    ","sectionClass":"section-intro"},{"title":"곰돌이 마들렌 만들기","html":"\n      <div style=\"display: flex; gap: 40px; width: 100%; height: 400px; align-items: stretch;\">\n        <div style=\"flex: 1.1; display: flex; flex-direction: column; gap: 16px; height: 400px;\">\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;\">\n            <i data-lucide=\"cookie\" class=\"slide-icon-hero\"></i>\n            <h3 style=\"font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);\">오늘의 베이킹</h3>\n            <p class=\"card-text\" style=\"font-size: 14.5px; line-height: 1.6; color: #101114;\">\n              오늘은 귀여운 곰돌이 모양의 마들렌을 만들어 보겠습니다. 초코펜으로 세상에 하나뿐인 귀여운 표정을 꾸며보세요!\n            </p>\n          </div>\n          <div class=\"card\" style=\"margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;\">\n            <i data-lucide=\"leaf\" class=\"slide-icon-hero\"></i>\n            <h3 style=\"font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);\">건강한 주재료</h3>\n            <p class=\"card-text\" style=\"font-size: 13.5px; line-height: 1.5; color: #101114;\">우유버터, 비정제 원당, 유기농 박력분, 무항생제 달걀</p>\n            <span class=\"card-label\" style=\"margin-top: auto; align-self: flex-start; font-size: 11px; padding: 2px 8px;\">Premium Ingredients</span>\n          </div>\n        </div>\n        <div style=\"flex: 0.9; border-radius: 0px; overflow: hidden; border: none; background: transparent; padding: 0; height: 400px; display: flex; justify-content: center; align-items: center;\">\n          <img src=\"images/image2.png\" style=\"width: 100%; height: 100%; object-fit: contain;\">\n        </div>\n      </div>\n    ","sectionClass":"section-1"},{"title":"재료 소개","html":"\n      <div style=\"display: flex; gap: 40px; width: 100%; height: 360px; align-items: center;\">\n        <div class=\"grid\" style=\"flex: 1.2; height: 360px; grid-template-columns: repeat(2, 1fr); gap: 16px; align-content: space-between;\">\n          <div class=\"feature-card\" style=\"padding: 16px 20px; height: 108px; display: flex; flex-direction: column; justify-content: center;\">\n            <h4 style=\"color:var(--theme-color); font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px; font-weight:700;\">\n              <i data-lucide=\"package\" class=\"slide-icon-item\"></i> 우유버터\n            </h4>\n            <p style=\"font-size:13.5px; color:#686b82;\">200g (풍미 가득한 맛의 중심)</p>\n          </div>\n          <div class=\"feature-card\" style=\"padding: 16px 20px; height: 108px; display: flex; flex-direction: column; justify-content: center;\">\n            <h4 style=\"color:var(--theme-color); font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px; font-weight:700;\">\n              <i data-lucide=\"package\" class=\"slide-icon-item\"></i> 설탕 / 원당\n            </h4>\n            <p style=\"font-size:13.5px; color:#686b82;\">200g (기분 좋은 단맛)</p>\n          </div>\n          <div class=\"feature-card\" style=\"padding: 16px 20px; height: 108px; display: flex; flex-direction: column; justify-content: center;\">\n            <h4 style=\"color:var(--theme-color); font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px; font-weight:700;\">\n              <i data-lucide=\"package\" class=\"slide-icon-item\"></i> 유기농 박력분\n            </h4>\n            <p style=\"font-size:13.5px; color:#686b82;\">200g (부드러운 마들렌 식감)</p>\n          </div>\n          <div class=\"feature-card\" style=\"padding: 16px 20px; height: 108px; display: flex; flex-direction: column; justify-content: center;\">\n            <h4 style=\"color:var(--theme-color); font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px; font-weight:700;\">\n              <i data-lucide=\"package\" class=\"slide-icon-item\"></i> 달걀\n            </h4>\n            <p style=\"font-size:13.5px; color:#686b82;\">200g (부드러운 구조 형성)</p>\n          </div>\n          <div class=\"feature-card\" style=\"padding: 16px 20px; grid-column: span 2; height: 108px; display: flex; flex-direction: column; justify-content: center;\">\n            <h4 style=\"color:var(--theme-color); font-size:16px; margin-bottom:4px; display:flex; align-items:center; gap:8px; font-weight:700;\">\n              <i data-lucide=\"plus-circle\" class=\"slide-icon-item\"></i> 베이킹파우더 & 소금\n            </h4>\n            <p style=\"font-size:13.5px; color:#686b82;\">베이킹파우더 4g, 소금 1g (부풀어 오름과 간 맞추기)</p>\n          </div>\n        </div>\n        <div style=\"flex: 0.9; border-radius: 0px; overflow:hidden; border: none; background: transparent; padding: 0; height: 360px; display:flex; justify-content:center; align-items:center;\">\n          <img src=\"images/image3.png\" style=\"width:100%; height:100%; object-fit: contain;\">\n        </div>\n      </div>\n    ","sectionClass":"section-1"},{"title":"[1단계] 달걀과 설탕 섞기","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 01</div>\n          <p class=\"step-description\">\n            달걀에 설탕을 넣고 거품기로 가볍게 섞어줍니다.<br><br>\n            <span style=\"font-size: 14.5px; color: #686b82; line-height: 1.6; display:block;\">※ 거품을 내는 것이 아니라, 설탕이 서서히 녹아 계란과 잘 섞이도록 부드럽게 저어줍니다.</span>\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image4.png\" alt=\"달걀과 설탕 섞기\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[2단계] 가루류 체쳐 섞기","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 02</div>\n          <p class=\"step-description\">\n            박력분, 베이킹 파우더, 소금을 함께 고운 체에 쳐 내립니다.<br><br>\n            그 후 달걀물에 넣어 날가루가 보이지 않을 때까지 골고루 섞어줍니다.\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image5.png\" alt=\"가루류 체쳐 섞기\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[3단계] 녹인 버터 혼합","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 03</div>\n          <p class=\"step-description\">\n            녹인 버터(온도 약 50~60℃)를 반죽에 넣어줍니다.<br><br>\n            버터가 겉돌지 않고 반죽과 완전히 섞여 윤기가 날 때까지 매끄럽게 저어줍니다.\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image6.png\" alt=\"녹인 버터 혼합\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[4단계] 짤주머니 휴지","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 04</div>\n          <p class=\"step-description\">\n            완성된 반죽을 짤 주머니에 담아 냉장고에 넣고 30분간 휴지(숙성)시켜 줍니다.<br><br>\n            <span style=\"font-size: 14.5px; color: #686b82; line-height: 1.6; display:block;\">※ 휴지 과정을 통해 밀가루가 수분을 충분히 머금고 버터가 안정화되어 더 촉촉하고 부드러운 마들렌이 됩니다.</span>\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image7.png\" alt=\"짤주머니 휴지\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[5단계] 틀에 반죽 팬닝","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 05</div>\n          <p class=\"step-description\">\n            반죽을 준비된 곰돌이 마들렌 팬에 짜줍니다.<br><br>\n            틀의 약 80% 높이까지 일정하게 채워줍니다.<br><br>\n            <span style=\"font-size: 14.5px; color: #686b82; line-height: 1.6; display:block;\">※ 구우면서 부풀어 오르기 때문에 틀을 너무 꽉 채우지 않도록 주의합니다.</span>\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image8.png\" alt=\"틀에 반죽 팬닝\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[6단계] 오븐 굽기","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 06</div>\n          <p class=\"step-description\">\n            180도로 미리 예열된 오븐에 마들렌 팬을 넣습니다.<br><br>\n            10분에서 15분 간 구우며, 가운데가 봉긋하게 솟아오르면 꺼냅니다.\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image9.png\" alt=\"오븐 굽기\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[7단계] 식힘망에서 식히기","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 07</div>\n          <p class=\"step-description\">\n            구워져 나온 마들렌을 팬에서 분리하여 식힘망 위에 올려 충분히 식혀줍니다.<br><br>\n            <span style=\"font-size: 14.5px; color: #686b82; line-height: 1.6; display:block;\">※ 뜨거운 상태에서 얼굴 장식을 하면 초콜릿이 다 녹아내리므로 차갑게 완전히 식혀주어야 합니다.</span>\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image10.png\" alt=\"식힘망에서 식히기\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"[8단계] 초코펜으로 장식하기","html":"\n      <div class=\"step-container\">\n        <div class=\"step-text-box\">\n          <div class=\"step-badge\">STEP 08</div>\n          <p class=\"step-description\">\n            따뜻한 물에 녹인 초코펜을 사용해 곰돌이 마들렌의 눈, 코, 귀를 그려 귀여운 표정으로 장식합니다.\n          </p>\n        </div>\n        <div class=\"step-image-box\">\n          <img src=\"images/image11.png\" alt=\"초코펜으로 장식하기\">\n        </div>\n      </div>\n    ","sectionClass":"section-2"},{"title":"곰돌이 마들렌 완성!","html":"\n      <div style=\"display: flex; flex-direction: column; align-items: center; width: 100%;\">\n        <div style=\"display: flex; gap: 32px; width: 932px; justify-content: center; margin-bottom: 24px;\">\n          <div style=\"border-radius: 0px; overflow:hidden; border: none; width: 450px; height: 300px; background: transparent; padding: 0; display:flex; justify-content:center; align-items:center;\">\n            <img src=\"images/image12.png\" style=\"width:100%; height:100%; object-fit: contain;\">\n          </div>\n          <div style=\"border-radius: 0px; overflow:hidden; border: none; width: 450px; height: 300px; background: transparent; padding: 0; display:flex; justify-content:center; align-items:center;\">\n            <img src=\"images/image13.png\" style=\"width:100%; height:100%; object-fit: contain;\">\n          </div>\n        </div>\n        <div class=\"conclusion\" style=\"padding: 20px 30px; width: 932px;\">\n          <h3 class=\"conclusion-line\" style=\"font-size: 20px; color: var(--theme-color);\">귀엽고 달콤한 곰돌이 마들렌 완성!</h3>\n          <p style=\"font-size: 14px; color: #686b82; margin-top: 4px;\">정성을 담아 완성한 홈베이킹, 맛있게 즐겨보세요.</p>\n        </div>\n      </div>\n    ","sectionClass":"section-outro"}];
+let currentIdx = -1;
+
+const hubView = document.getElementById('hub-view');
+const slideView = document.getElementById('slide-view');
+const slideTitle = document.getElementById('active-slide-title');
+const slideContent = document.getElementById('active-slide-content');
+const prevBtn = document.getElementById('nav-prev-btn');
+const nextBtn = document.getElementById('nav-next-btn');
+const hubBtn = document.getElementById('nav-hub-btn');
+
+function renderHub() {
+  currentIdx = -1;
+  
+  slideView.style.display = 'none';
+  slideView.classList.remove('active');
+  
+  hubView.style.display = 'block';
+  setTimeout(() => {
+    hubView.classList.add('active');
+  }, 10);
+}
+
+function renderSlide(idx) {
+  if (idx < 0 || idx >= slidesData.length) {
+    renderHub();
+    return;
+  }
+  
+  currentIdx = idx;
+  
+  hubView.style.display = 'none';
+  hubView.classList.remove('active');
+  
+  const slide = slidesData[idx];
+  slideTitle.textContent = slide.title;
+  slideContent.innerHTML = slide.html;
+  
+  // 동적 클래스 교체를 통한 테마 변수 실시간 동기화
+  slideView.className = 'view active ' + slide.sectionClass;
+  
+  if (idx === 0) {
+    prevBtn.innerHTML = '<span class="nav-disabled"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> 이전</span>';
+    prevBtn.href = "#";
+    prevBtn.style.pointerEvents = 'none';
+  } else {
+    prevBtn.innerHTML = '<i data-lucide="arrow-left" style="width:16px; height:16px; display:inline-block; vertical-align:middle;"></i> 이전';
+    prevBtn.href = "#slide-" + idx;
+    prevBtn.style.pointerEvents = 'auto';
+  }
+  
+  if (idx === slidesData.length - 1) {
+    nextBtn.innerHTML = '<span class="nav-disabled">다음 <i data-lucide="arrow-right" style="width:16px; height:16px;"></i></span>';
+    nextBtn.href = "#";
+    nextBtn.style.pointerEvents = 'none';
+  } else {
+    nextBtn.innerHTML = '다음 <i data-lucide="arrow-right" style="width:16px; height:16px; display:inline-block; vertical-align:middle;"></i>';
+    nextBtn.href = "#slide-" + (idx + 2);
+    nextBtn.style.pointerEvents = 'auto';
+  }
+  
+  hubBtn.textContent = String(idx + 1).padStart(2, '0') + " / " + String(slidesData.length).padStart(2, '0');
+  
+  lucide.createIcons();
+  
+  slideView.style.display = 'flex';
+  setTimeout(() => {
+    slideView.classList.add('active');
+  }, 10);
+}
+
+function handleHashChange() {
+  const hash = location.hash;
+  const match = hash.match(/^#slide-([0-9]+)$/);
+  if (match) {
+    const idx = parseInt(match[1]) - 1;
+    renderSlide(idx);
+  } else {
+    renderHub();
+  }
+}
+
+window.addEventListener('hashchange', handleHashChange);
+
+document.addEventListener('keydown', (e) => {
+  if (currentIdx === -1) return;
+  if (e.key === 'ArrowRight') {
+    if (currentIdx < slidesData.length - 1) {
+      location.hash = "#slide-" + (currentIdx + 2);
+    }
+  } else if (e.key === 'ArrowLeft') {
+    if (currentIdx > 0) {
+      location.hash = "#slide-" + currentIdx;
+    }
+  } else if (e.key === 'Escape') {
+    location.hash = "";
+  }
+});
+
+hubBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  location.hash = "";
+});
+
+handleHashChange();
+</script>
+</body>
+</html>
