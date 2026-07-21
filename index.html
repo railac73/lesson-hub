@@ -1,404 +1,457 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1280">
-<title>교육자료 허브 — 약수 학부모 교육</title>
-<meta name="description" content="약수 학부모 교육자료 모음. 베이킹, 요리 등 다양한 교육자료를 한눈에 확인하세요.">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #f8f8fb;
-  font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
-  color: #101114;
-  min-height: 100vh;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>교육자료 허브 — 약수 복지관 교육</title>
+  <meta name="description" content="약수 복지관 교육자료 모음. 베이킹, 요리 등 다양한 교육자료를 한눈에 확인하세요.">
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* === Hero Header === */
-.hero {
-  width: 1280px;
-  margin: 0 auto;
-  padding: 80px 80px 20px;
-  text-align: center;
-}
-.hero-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px; height: 72px;
-  background: linear-gradient(135deg, #7132f5 0%, #a855f7 100%);
-  border-radius: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 8px 32px rgba(113, 50, 245, 0.2);
-}
-.hero-icon i {
-  color: white !important;
-  width: 36px !important;
-  height: 36px !important;
-  stroke-width: 1.8 !important;
-}
-.hero h1 {
-  font-size: 48px;
-  font-weight: 700;
-  color: #101114;
-  letter-spacing: -0.03em;
-  margin-bottom: 12px;
-  line-height: 1.2;
-}
-.hero h1 span {
-  background: linear-gradient(135deg, #7132f5, #a855f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.hero p {
-  font-size: 18px;
-  color: #686b82;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
+    body {
+      background: #f8f8fb;
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      color: #101114;
+      min-height: 100vh;
+    }
 
-/* === Stats Bar === */
-.stats-bar {
-  width: 1280px;
-  margin: 40px auto 0;
-  padding: 0 80px;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-.stat-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  background: white;
-  border: 1px solid #e8e8f0;
-  border-radius: 100px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #4b4d5f;
-}
-.stat-chip i {
-  width: 18px !important;
-  height: 18px !important;
-  color: #7132f5 !important;
-  stroke-width: 2 !important;
-}
+    /* === Hero Header === */
+    .hero {
+      width: 1280px;
+      margin: 0 auto;
+      padding: 80px 80px 20px;
+      text-align: center;
+    }
 
-/* === Lesson Grid === */
-.lessons-container {
-  width: 1280px;
-  margin: 48px auto 80px;
-  padding: 0 80px;
-}
-.lessons-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
+    .hero-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #7132f5 0%, #a855f7 100%);
+      border-radius: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(113, 50, 245, 0.2);
+    }
 
-/* === Lesson Card === */
-.lesson-card {
-  position: relative;
-  background: white;
-  border: 1px solid #e8e8f0;
-  border-radius: 20px;
-  overflow: hidden;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-}
-.lesson-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(113, 50, 245, 0.12);
-  border-color: #7132f5;
-}
-.lesson-card:active {
-  transform: scale(0.98);
-}
+    .hero-icon i {
+      color: white !important;
+      width: 36px !important;
+      height: 36px !important;
+      stroke-width: 1.8 !important;
+    }
 
-/* Card Gradient Top */
-.card-gradient {
-  height: 8px;
-  background: linear-gradient(90deg, #7132f5, #a855f7, #7132f5);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      color: #101114;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
 
-.card-body {
-  padding: 28px 28px 24px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+    .hero h1 span {
+      background: linear-gradient(135deg, #7132f5, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-.card-number {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #7132f5;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
+    .hero p {
+      font-size: 18px;
+      color: #686b82;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
 
-.card-lesson-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #101114;
-  line-height: 1.35;
-  margin-bottom: 12px;
-  letter-spacing: -0.01em;
-}
+    /* === Stats Bar === */
+    .stats-bar {
+      width: 1280px;
+      margin: 40px auto 0;
+      padding: 0 80px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
 
-.card-desc {
-  font-size: 14px;
-  color: #686b82;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  flex: 1;
-}
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: white;
+      border: 1px solid #e8e8f0;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4b4d5f;
+    }
 
-.card-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f5;
-}
-.card-meta-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: #9497a9;
-  font-weight: 500;
-}
-.card-meta-item i {
-  width: 14px !important;
-  height: 14px !important;
-  stroke-width: 2 !important;
-  color: #b0b3c5 !important;
-}
+    .stat-chip i {
+      width: 18px !important;
+      height: 18px !important;
+      color: #7132f5 !important;
+      stroke-width: 2 !important;
+    }
 
-.card-arrow {
-  position: absolute;
-  top: 28px; right: 28px;
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: #f4f4f7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-.card-arrow i {
-  width: 18px !important;
-  height: 18px !important;
-  color: #b0b3c5 !important;
-  stroke-width: 2 !important;
-  transition: all 0.2s ease;
-}
-.lesson-card:hover .card-arrow {
-  background: #7132f5;
-}
-.lesson-card:hover .card-arrow i {
-  color: white !important;
-}
+    /* === Lesson Grid === */
+    .lessons-container {
+      width: 1280px;
+      margin: 48px auto 80px;
+      padding: 0 80px;
+    }
 
-/* === Coming Soon Card === */
-.coming-soon {
-  border: 2px dashed #dedee5;
-  background: #fafafe;
-}
-.coming-soon .card-gradient {
-  background: #e8e8f0;
-  animation: none;
-}
-.coming-soon .card-number { color: #b0b3c5; }
-.coming-soon .card-lesson-title { color: #b0b3c5; }
-.coming-soon .card-desc { color: #c8c9d5; }
-.coming-soon:hover {
-  transform: none;
-  box-shadow: none;
-  border-color: #dedee5;
-}
-.coming-soon .card-arrow {
-  background: transparent;
-}
-.coming-soon .card-arrow i {
-  color: #dedee5 !important;
-}
-.coming-soon:hover .card-arrow {
-  background: transparent;
-}
-.coming-soon:hover .card-arrow i {
-  color: #dedee5 !important;
-}
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
 
-/* === Footer === */
-.footer {
-  width: 1280px;
-  margin: 0 auto;
-  padding: 40px 80px;
-  text-align: center;
-  border-top: 1px solid #e8e8f0;
-}
-.footer p {
-  font-size: 13px;
-  color: #9497a9;
-}
-.footer .instructor {
-  font-weight: 600;
-  color: #686b82;
-}
-</style>
+    /* === Lesson Card === */
+    .lesson-card {
+      position: relative;
+      background: white;
+      border: 1px solid #e8e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(113, 50, 245, 0.12);
+      border-color: #7132f5;
+    }
+
+    .lesson-card:active {
+      transform: scale(0.98);
+    }
+
+    /* Card Gradient Top */
+    .card-gradient {
+      height: 8px;
+      background: linear-gradient(90deg, #7132f5, #a855f7, #7132f5);
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .card-body {
+      padding: 28px 28px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-number {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #7132f5;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card-lesson-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #101114;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: #686b82;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f5;
+    }
+
+    .card-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #9497a9;
+      font-weight: 500;
+    }
+
+    .card-meta-item i {
+      width: 14px !important;
+      height: 14px !important;
+      stroke-width: 2 !important;
+      color: #b0b3c5 !important;
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #f4f4f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .card-arrow i {
+      width: 18px !important;
+      height: 18px !important;
+      color: #b0b3c5 !important;
+      stroke-width: 2 !important;
+      transition: all 0.2s ease;
+    }
+
+    .lesson-card:hover .card-arrow {
+      background: #7132f5;
+    }
+
+    .lesson-card:hover .card-arrow i {
+      color: white !important;
+    }
+
+    /* === Coming Soon Card === */
+    .coming-soon {
+      border: 2px dashed #dedee5;
+      background: #fafafe;
+    }
+
+    .coming-soon .card-gradient {
+      background: #e8e8f0;
+      animation: none;
+    }
+
+    .coming-soon .card-number {
+      color: #b0b3c5;
+    }
+
+    .coming-soon .card-lesson-title {
+      color: #b0b3c5;
+    }
+
+    .coming-soon .card-desc {
+      color: #c8c9d5;
+    }
+
+    .coming-soon:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #dedee5;
+    }
+
+    .coming-soon .card-arrow {
+      background: transparent;
+    }
+
+    .coming-soon .card-arrow i {
+      color: #dedee5 !important;
+    }
+
+    .coming-soon:hover .card-arrow {
+      background: transparent;
+    }
+
+    .coming-soon:hover .card-arrow i {
+      color: #dedee5 !important;
+    }
+
+    /* === Footer === */
+    .footer {
+      width: 1280px;
+      margin: 0 auto;
+      padding: 40px 80px;
+      text-align: center;
+      border-top: 1px solid #e8e8f0;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: #9497a9;
+    }
+
+    .footer .instructor {
+      font-weight: 600;
+      color: #686b82;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- Hero Section -->
-<header class="hero">
-  <div class="hero-icon">
-    <i data-lucide="chef-hat"></i>
-  </div>
-  <h1><span>약수</span> 학부모 교육자료</h1>
-  <p>베이킹과 요리를 통한 즐거운 학부모 교육 프로그램.<br>각 교육자료를 클릭하여 슬라이드를 확인하세요.</p>
-</header>
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-icon">
+      <i data-lucide="chef-hat"></i>
+    </div>
+    <h1><span>약수</span> 학부모 교육자료</h1>
+    <p>베이킹과 요리를 통한 즐거운 학부모 교육 프로그램.<br>각 교육자료를 클릭하여 슬라이드를 확인하세요.</p>
+  </header>
 
-<!-- Stats -->
-<div class="stats-bar">
-  <div class="stat-chip">
-    <i data-lucide="book-open"></i>
-    총 4개 교육자료
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <i data-lucide="book-open"></i>
+      총 4개 교육자료
+    </div>
+    <div class="stat-chip">
+      <i data-lucide="user"></i>
+      강사: 한혜숙
+    </div>
+    <div class="stat-chip">
+      <i data-lucide="cake-slice"></i>
+      베이킹 · 요리
+    </div>
   </div>
-  <div class="stat-chip">
-    <i data-lucide="user"></i>
-    강사: 한혜숙
-  </div>
-  <div class="stat-chip">
-    <i data-lucide="cake-slice"></i>
-    베이킹 · 요리
-  </div>
-</div>
 
-<!-- Lesson Cards -->
-<main class="lessons-container">
-  <div class="lessons-grid">
+  <!-- Lesson Cards -->
+  <main class="lessons-container">
+    <div class="lessons-grid">
 
-    <!-- 01. 곰돌이 마들렌 -->
-    <a class="lesson-card" href="lessons/01_곰돌이_마들렌/slides.html" id="lesson-01">
-      <div class="card-gradient"></div>
-      <div class="card-body">
-        <div class="card-number">Lesson 01</div>
-        <h2 class="card-lesson-title">곰돌이 마들렌<br>만들기</h2>
-        <p class="card-desc">우유버터, 비정제 원당, 유기농 박력분, 무항생제 달걀로 만드는 귀여운 곰돌이 모양 마들렌</p>
-        <div class="card-meta">
-          <span class="card-meta-item">
-            <i data-lucide="layers"></i>
-            13 슬라이드
-          </span>
-          <span class="card-meta-item">
-            <i data-lucide="clock"></i>
-            약 40분
-          </span>
+      <!-- 01. 곰돌이 마들렌 -->
+      <a class="lesson-card" href="lessons/01_곰돌이_마들렌/slides.html" id="lesson-01">
+        <div class="card-gradient"></div>
+        <div class="card-body">
+          <div class="card-number">Lesson 01</div>
+          <h2 class="card-lesson-title">곰돌이 마들렌<br>만들기</h2>
+          <p class="card-desc">우유버터, 비정제 원당, 유기농 박력분, 무항생제 달걀로 만드는 귀여운 곰돌이 모양 마들렌</p>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <i data-lucide="layers"></i>
+              13 슬라이드
+            </span>
+            <span class="card-meta-item">
+              <i data-lucide="clock"></i>
+              약 40분
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="card-arrow">
-        <i data-lucide="arrow-right"></i>
-      </div>
-    </a>
-
-    <!-- 02. 감자샐러드 샌드위치 -->
-    <a class="lesson-card" href="lessons/02_감자샐러드_샌드위치/slides.html" id="lesson-02">
-      <div class="card-gradient"></div>
-      <div class="card-body">
-        <div class="card-number">Lesson 02</div>
-        <h2 class="card-lesson-title">감자샐러드<br>샌드위치 만들기</h2>
-        <p class="card-desc">직접 만든 유기농 식빵, 풀리쉬 사전반죽, 고소한 우유 삶은 감자와 달걀로 속을 꽉 채운 샌드위치</p>
-        <div class="card-meta">
-          <span class="card-meta-item">
-            <i data-lucide="layers"></i>
-            11 슬라이드
-          </span>
-          <span class="card-meta-item">
-            <i data-lucide="clock"></i>
-            약 30분
-          </span>
+        <div class="card-arrow">
+          <i data-lucide="arrow-right"></i>
         </div>
-      </div>
-      <div class="card-arrow">
-        <i data-lucide="arrow-right"></i>
-      </div>
-    </a>
+      </a>
 
-    <!-- 03. 오픈 단팥빵 -->
-    <a class="lesson-card" href="lessons/03_오픈 단팥빵/slides.html" id="lesson-03">
-      <div class="card-gradient"></div>
-      <div class="card-body">
-        <div class="card-number">Lesson 03</div>
-        <h2 class="card-lesson-title">오픈 단팥빵<br>만들기</h2>
-        <p class="card-desc">직접 만든 모닝빵과 달달한 통팥을 이용해 만드는 귀엽고 맛있는 오픈 단팥빵</p>
-        <div class="card-meta">
-          <span class="card-meta-item">
-            <i data-lucide="layers"></i>
-            6 슬라이드
-          </span>
-          <span class="card-meta-item">
-            <i data-lucide="clock"></i>
-            약 20분
-          </span>
+      <!-- 02. 감자샐러드 샌드위치 -->
+      <a class="lesson-card" href="lessons/02_감자샐러드_샌드위치/slides.html" id="lesson-02">
+        <div class="card-gradient"></div>
+        <div class="card-body">
+          <div class="card-number">Lesson 02</div>
+          <h2 class="card-lesson-title">감자샐러드<br>샌드위치 만들기</h2>
+          <p class="card-desc">직접 만든 유기농 식빵, 풀리쉬 사전반죽, 고소한 우유 삶은 감자와 달걀로 속을 꽉 채운 샌드위치</p>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <i data-lucide="layers"></i>
+              11 슬라이드
+            </span>
+            <span class="card-meta-item">
+              <i data-lucide="clock"></i>
+              약 30분
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="card-arrow">
-        <i data-lucide="arrow-right"></i>
-      </div>
-    </a>
-
-    <!-- 04. 보우짱 크럼블 머핀 -->
-    <a class="lesson-card" href="lessons/04_보우짱_크럼블_머핀/slides.html" id="lesson-04">
-      <div class="card-gradient"></div>
-      <div class="card-body">
-        <div class="card-number">Lesson 04</div>
-        <h2 class="card-lesson-title">보우짱 크럼블 머핀<br>만들기</h2>
-        <p class="card-desc">달콤하고 포슬포슬한 보우짱(미니 단호박)과 고소 바삭한 소보로 크럼블이 듬뿍 올라간 영양 머핀</p>
-        <div class="card-meta">
-          <span class="card-meta-item">
-            <i data-lucide="layers"></i>
-            12 슬라이드
-          </span>
-          <span class="card-meta-item">
-            <i data-lucide="clock"></i>
-            약 35분
-          </span>
+        <div class="card-arrow">
+          <i data-lucide="arrow-right"></i>
         </div>
-      </div>
-      <div class="card-arrow">
-        <i data-lucide="arrow-right"></i>
-      </div>
-    </a>
+      </a>
 
-  </div>
-</main>
+      <!-- 03. 오픈 단팥빵 -->
+      <a class="lesson-card" href="lessons/03_오픈 단팥빵/slides.html" id="lesson-03">
+        <div class="card-gradient"></div>
+        <div class="card-body">
+          <div class="card-number">Lesson 03</div>
+          <h2 class="card-lesson-title">오픈 단팥빵<br>만들기</h2>
+          <p class="card-desc">직접 만든 모닝빵과 달달한 통팥을 이용해 만드는 귀엽고 맛있는 오픈 단팥빵</p>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <i data-lucide="layers"></i>
+              6 슬라이드
+            </span>
+            <span class="card-meta-item">
+              <i data-lucide="clock"></i>
+              약 20분
+            </span>
+          </div>
+        </div>
+        <div class="card-arrow">
+          <i data-lucide="arrow-right"></i>
+        </div>
+      </a>
 
-<!-- Footer -->
-<footer class="footer">
-  <p>
-    <span class="instructor">라일락의 작업실</span> · 한혜숙 강사
-    · 제과제빵 · 천연 발효빵 · 케이크 디자인
-  </p>
-</footer>
+      <!-- 04. 보우짱 크럼블 머핀 -->
+      <a class="lesson-card" href="lessons/04_보우짱_크럼블_머핀/slides.html" id="lesson-04">
+        <div class="card-gradient"></div>
+        <div class="card-body">
+          <div class="card-number">Lesson 04</div>
+          <h2 class="card-lesson-title">보우짱 크럼블 머핀<br>만들기</h2>
+          <p class="card-desc">달콤하고 포슬포슬한 보우짱(미니 단호박)과 고소 바삭한 소보로 크럼블이 듬뿍 올라간 영양 머핀</p>
+          <div class="card-meta">
+            <span class="card-meta-item">
+              <i data-lucide="layers"></i>
+              12 슬라이드
+            </span>
+            <span class="card-meta-item">
+              <i data-lucide="clock"></i>
+              약 35분
+            </span>
+          </div>
+        </div>
+        <div class="card-arrow">
+          <i data-lucide="arrow-right"></i>
+        </div>
+      </a>
 
-<script>
-  lucide.createIcons();
-</script>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      <span class="instructor">라일락의 작업실</span> · 한혜숙 강사
+      · 제과제빵 · 천연 발효빵 · 케이크 디자인
+    </p>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
+
 </html>
