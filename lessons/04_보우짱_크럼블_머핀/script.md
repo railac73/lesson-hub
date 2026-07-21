@@ -76,7 +76,7 @@
 
 [6단계] 보우짱 넣어 섞기 보우짱 넣어 섞기.
 
-![Slide 10 Image](images/step4_panning.png)
+![Slide 10 Image](images/step1_pumpkin.png)
 
 ---
 
