@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280">
+  <title>청귤청 만들기 — 비주얼 자료</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ffffff;
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      color: #101114;
+      min-height: 100vh;
+    }
+
+    /* SPA View controller */
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .view.active {
+      display: block;
+      opacity: 1;
+    }
+
+    #slide-view.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* HUB VIEW STYLING */
+    #hub-view {
+      width: 1280px;
+      margin: 0 auto;
+      padding: 60px 80px 80px;
+    }
+
+    .page-title {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #7132f5;
+      text-align: center;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #686b82;
+      margin-bottom: 50px;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-left: 4px solid;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-range {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease-out;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card:active {
+      transform: scale(0.97);
+    }
+
+    .card .card-num {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .card .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #101114;
+      line-height: 1.4;
+    }
+
+    .card .card-file {
+      font-size: 11px;
+      color: #9497a9;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: auto;
+    }
+
+    /* === 섹션별 색상 CSS 패턴 (허브 뷰 및 슬라이드 연계 컬러 변수) === */
+    .section-intro .section-header {
+      border-color: #7132f5;
+      color: #7132f5;
+    }
+
+    .section-intro .num-range {
+      background: #7132f5;
+    }
+
+    .section-intro .card:hover {
+      border-color: #7132f5;
+      box-shadow: rgba(113, 50, 245, 0.12) 0px 8px 24px;
+    }
+
+    .section-intro .card .card-num {
+      color: #7132f5;
+    }
+
+    .section-1 .section-header {
+      border-color: #149e61;
+      color: #026b3f;
+    }
+
+    .section-1 .num-range {
+      background: #149e61;
+    }
+
+    .section-1 .card:hover {
+      border-color: #149e61;
+      box-shadow: rgba(20, 158, 97, 0.12) 0px 8px 24px;
+    }
+
+    .section-1 .card .card-num {
+      color: #149e61;
+    }
+
+    .section-2 .section-header {
+      border-color: #101114;
+      color: #101114;
+    }
+
+    .section-2 .num-range {
+      background: #101114;
+    }
+
+    .section-2 .card:hover {
+      border-color: #101114;
+      box-shadow: rgba(16, 17, 20, 0.12) 0px 8px 24px;
+    }
+
+    .section-2 .card .card-num {
+      color: #101114;
+    }
+
+    .section-outro .section-header {
+      border-color: #7132f5;
+      color: #7132f5;
+    }
+
+    .section-outro .num-range {
+      background: linear-gradient(90deg, #7132f5, #855bfb);
+    }
+
+    .section-outro .card:hover {
+      border-color: #7132f5;
+      box-shadow: rgba(113, 50, 245, 0.15) 0px 8px 24px;
+    }
+
+    .section-outro .card .card-num {
+      color: #7132f5;
+    }
+
+    /* === 슬라이드 뷰 섹션 연계 테마 변수 === */
+    #slide-view.section-intro {
+      --theme-color: #7132f5;
+      --theme-bg-soft: rgba(113, 50, 245, 0.05);
+    }
+
+    #slide-view.section-1 {
+      --theme-color: #149e61;
+      --theme-bg-soft: rgba(20, 158, 97, 0.06);
+    }
+
+    #slide-view.section-2 {
+      --theme-color: #101114;
+      --theme-bg-soft: rgba(16, 17, 20, 0.04);
+    }
+
+    #slide-view.section-outro {
+      --theme-color: #7132f5;
+      --theme-bg-soft: rgba(113, 50, 245, 0.05);
+    }
+
+    /* SLIDE VIEW STYLING */
+    .container {
+      width: 1280px;
+      height: 100%;
+      padding: 30px 80px 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--theme-color);
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .slide-icon-hero {
+      width: 44px !important;
+      height: 44px !important;
+      stroke-width: 1.5 !important;
+      color: var(--theme-color) !important;
+      margin-bottom: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .slide-icon-feature {
+      width: 36px !important;
+      height: 36px !important;
+      stroke-width: 1.5 !important;
+      color: var(--theme-color) !important;
+      margin-bottom: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* Step Layout Styling */
+    .step-container {
+      display: flex;
+      gap: 36px;
+      width: 100%;
+      height: 460px;
+      align-items: stretch;
+    }
+
+    .step-text-box {
+      flex: 1;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 16px;
+      padding: 34px 36px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .step-header-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      background: var(--theme-color);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .step-sub-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      background: #e6e6ed;
+      color: #4b4e60;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 20px;
+    }
+
+    .step-main-title {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.45;
+      color: #101114;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+      margin-bottom: 14px;
+    }
+
+    .step-description {
+      font-size: 26px;
+      line-height: 1.45;
+      color: #101114;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      word-break: keep-all;
+    }
+
+    .step-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #ffffff;
+      border: 1px solid #dedee5;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #3b3e4f;
+    }
+
+    .step-tag i {
+      width: 15px;
+      height: 15px;
+      color: #149e61;
+      stroke-width: 2.2;
+    }
+
+    .step-tip-card {
+      background: #ffffff;
+      border: 1px solid #dedee5;
+      border-left: 4px solid #149e61;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-tip-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #101114;
+    }
+
+    .step-tip-header i {
+      width: 17px;
+      height: 17px;
+      color: #f59e0b;
+      stroke-width: 2.2;
+    }
+
+    .step-tip-text {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: #4b4e60;
+      word-break: keep-all;
+      margin: 0;
+    }
+
+    .step-image-box {
+      flex: 1.1;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+    }
+
+    .step-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ingredients Grid */
+    .ing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    .ing-item {
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 12px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #101114;
+    }
+
+    .ing-item i {
+      color: var(--theme-color);
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    /* Conclusion box */
+    .conclusion {
+      background: var(--theme-bg-soft);
+      border: 2px solid var(--theme-color);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    /* Navigation */
+    .slide-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid #dedee5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+    }
+
+    .slide-nav-inner {
+      width: 1280px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+    }
+
+    .slide-nav a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #7132f5;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-nav a:hover {
+      color: #5741d8;
+    }
+
+    .slide-nav .nav-disabled {
+      font-size: 14px;
+      font-weight: 600;
+      color: #dedee5;
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-nav .nav-center a {
+      color: #686b82;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .slide-nav .nav-center a:hover {
+      color: #101114;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 1. HUB VIEW -->
+  <div id="hub-view" class="view active">
+    <h1 class="page-title">청귤청 만들기</h1>
+    <p class="page-subtitle">제주 무농약 청귤과 사탕수수 비정제 원당으로 만드는 건강하고 상큼한 수제청 — 비주얼 자료</p>
+
+    <div class="section section-intro">
+      <div class="section-header"><span class="num-range">01 - 02</span> Intro</div>
+      <div class="grid">
+        <a class="card" href="#slide-1">
+          <span class="card-num">01</span>
+          <span class="card-title">강사 소개: 한혜숙</span>
+          <span class="card-file">01-instructor.html</span>
+        </a>
+        <a class="card" href="#slide-2">
+          <span class="card-num">02</span>
+          <span class="card-title">강사 이력 및 수상 경력</span>
+          <span class="card-file">02-career.html</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="section section-1">
+      <div class="section-header"><span class="num-range">03 - 04</span> 레슨 소개 & 준비물</div>
+      <div class="grid">
+        <a class="card" href="#slide-3">
+          <span class="card-num">03</span>
+          <span class="card-title">청귤청 소개</span>
+          <span class="card-file">03-intro.html</span>
+        </a>
+        <a class="card" href="#slide-4">
+          <span class="card-num">04</span>
+          <span class="card-title">청귤 1kg과 원당 1.2kg을 준비한다.</span>
+          <span class="card-file">04-ingredients.html</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="section section-2">
+      <div class="section-header"><span class="num-range">05 - 11</span> 만드는 순서 (7단계)</div>
+      <div class="grid">
+        <a class="card" href="#slide-5">
+          <span class="card-num">05</span>
+          <span class="card-title">[1단계] 베이킹 소다로 청귤 씻기</span>
+          <span class="card-file">05-step-1.html</span>
+        </a>
+        <a class="card" href="#slide-6">
+          <span class="card-num">06</span>
+          <span class="card-title">[2단계] 키친타올로 물기 제거하기</span>
+          <span class="card-file">06-step-2.html</span>
+        </a>
+        <a class="card" href="#slide-7">
+          <span class="card-num">07</span>
+          <span class="card-title">[3단계] 꼭지와 배꼽 제거하기</span>
+          <span class="card-file">07-step-3.html</span>
+        </a>
+        <a class="card" href="#slide-8">
+          <span class="card-num">08</span>
+          <span class="card-title">[4단계] 청귤 슬라이스하기 (0.2~0.3cm)</span>
+          <span class="card-file">08-step-4.html</span>
+        </a>
+        <a class="card" href="#slide-9">
+          <span class="card-num">09</span>
+          <span class="card-title">[5단계] 볼에 청귤과 원당 혼합하기</span>
+          <span class="card-file">09-step-5.html</span>
+        </a>
+        <a class="card" href="#slide-10">
+          <span class="card-num">10</span>
+          <span class="card-title">[6단계] 원당 결정이 녹을 때까지 섞기</span>
+          <span class="card-file">10-step-6.html</span>
+        </a>
+        <a class="card" href="#slide-11">
+          <span class="card-num">11</span>
+          <span class="card-title">[7단계] 소독 용기 포장 및 냉장 숙성</span>
+          <span class="card-file">11-step-7.html</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="section section-outro">
+      <div class="section-header"><span class="num-range">12</span> 마무리 및 완성</div>
+      <div class="grid">
+        <a class="card" href="#slide-12">
+          <span class="card-num">12</span>
+          <span class="card-title">청귤청 완성 및 음용법</span>
+          <span class="card-file">12-outro.html</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SLIDE VIEW -->
+  <div id="slide-view" class="view">
+    <div class="container">
+      <h1 id="active-slide-title" class="title"></h1>
+      <div id="active-slide-content" style="width:100%; display:flex; justify-content:center; align-items:center;">
+      </div>
+    </div>
+
+    <nav class="slide-nav">
+      <div class="slide-nav-inner">
+        <div class="nav-left"><a href="#" id="nav-prev-btn">이전</a></div>
+        <div class="nav-center"><a href="#" id="nav-hub-btn">01 / 12</a></div>
+        <div class="nav-right"><a href="#" id="nav-next-btn">다음</a></div>
+      </div>
+    </nav>
+  </div>
+
+  <script>
+    const slidesData = [
+      {
+        "title": "강사 소개: 한혜숙",
+        "html": `
+      <div style="display: flex; gap: 40px; width: 100%; height: 460px; align-items: stretch;">
+        <div style="flex: 1; border-radius: 0px; overflow: hidden; border: none; background: transparent; padding: 0; height: 460px; display: flex; justify-content: center; align-items: center;">
+          <img src="images/instructor.png" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
+        <div style="flex: 1.1; display: flex; flex-direction: column; gap: 16px; height: 460px;">
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;">
+            <i data-lucide="chef-hat" class="slide-icon-hero"></i>
+            <h3 style="font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);">한혜숙 강사</h3>
+            <p class="card-text" style="font-size: 14.5px; line-height: 1.6; color: #101114;">요리와 베이킹을 좋아해서 30년 야매 베이킹 인생에 마침표를 찍은 여자</p>
+            <span class="card-label" style="margin-top: auto; align-self: flex-start; font-size: 11px; padding: 2px 8px; background: var(--theme-bg-soft); color: var(--theme-color); font-weight: 700; border-radius: 4px;">라일락의 작업실 대표</span>
+          </div>
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;">
+            <i data-lucide="cake" class="slide-icon-hero"></i>
+            <h3 style="font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);">전문 분야</h3>
+            <p class="card-text" style="text-align: left; font-size: 14px; line-height: 1.6; color: #101114;">
+              • 제과제빵 및 케이크 디자인<br>
+              • 천연 발효빵 마스터<br>
+              • 제과제빵 소품 전문 제작 및 베이킹 강의 전문
+            </p>
+            <span class="card-label" style="margin-top: auto; align-self: flex-start; font-size: 11px; padding: 2px 8px; background: var(--theme-bg-soft); color: var(--theme-color); font-weight: 700; border-radius: 4px;">제과제빵 전문 강사</span>
+          </div>
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-intro"
+      },
+      {
+        "title": "강사 이력 및 수상 경력",
+        "html": `
+      <div style="display: flex; gap: 40px; width: 100%; height: 460px; align-items: stretch;">
+        <div style="flex: 1.2; display: flex; flex-direction: column; justify-content: space-between; height: 460px; padding: 8px 0;">
+          <div style="display: flex; gap: 20px; align-items: flex-start;">
+            <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); display: flex; align-items: center; justify-content: center; z-index: 2; flex-shrink:0;">
+                <i data-lucide="graduation-cap" style="width: 20px; height: 20px; color: var(--theme-color);"></i>
+              </div>
+              <div style="width: 2px; flex-grow: 1; background: #dedee5; margin-top: 12px; min-height: 80px;"></div>
+            </div>
+            <div style="flex: 1; padding-top: 4px;">
+              <h3 style="font-size: 20px; font-weight: 700; color: #101114; margin-bottom: 12px; letter-spacing: -0.02em;">교육 및 전문 수료</h3>
+              <p style="font-size: 14.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;">
+                • 제빵기능사 및 천연발효빵 마스터 전문 자격<br>
+                • 아동요리지도사 1급 / 아동교육지도사 1급 자격 취득<br>
+                • 퍼스트아카데미 및 종로호텔제과직업전문학교 정규 과정 수료
+              </p>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 20px; align-items: flex-start;">
+            <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
+              <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); display: flex; align-items: center; justify-content: center; z-index: 2; flex-shrink:0;">
+                <i data-lucide="presentation" style="width: 20px; height: 20px; color: var(--theme-color);"></i>
+              </div>
+            </div>
+            <div style="flex: 1; padding-top: 4px;">
+              <h3 style="font-size: 20px; font-weight: 700; color: #101114; margin-bottom: 12px; letter-spacing: -0.02em;">주요 출강 및 강의</h3>
+              <p style="font-size: 14.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;">
+                • 남한중, 산곡초, 서부초 학부모 초청 특강 강사<br>
+                • 감일초 학부모 베이킹 연수 및 5학년 생태교육 출강<br>
+                • 수제 청귤청, 단호박 머핀, 샌드위치, 파운드케이크 등 출강
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex: 0.8; display: flex; flex-direction: column; gap: 16px; height: 460px;">
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; text-align: left; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; border-top: 4px solid var(--theme-color); border-radius: 12px; background: #f4f4f7; border-left: 1px solid #dedee5; border-right: 1px solid #dedee5; border-bottom: 1px solid #dedee5;">
+            <i data-lucide="briefcase" class="slide-icon-feature"></i>
+            <h3 style="font-size: 18px; font-weight: 700; color: #101114; margin-bottom: 8px; letter-spacing: -0.02em;">주요 공식 활동</h3>
+            <p style="font-size: 13.5px; line-height: 2.2; color: #686b82; letter-spacing: -0.01em;">
+              • <strong>라일락의 작업실</strong> 대표 베이커<br>
+              • 하남발도르프 숲골어린이집 대표<br>
+              • 아동건강생활 코치 및 자연 식재료 건강 수제청 연구
+            </p>
+          </div>
+          
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; text-align: left; padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; flex: 1; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); border-top: 4px solid var(--theme-color); border-radius: 12px; box-shadow: rgba(113, 50, 245, 0.04) 0px 4px 16px;">
+            <i data-lucide="trophy" class="slide-icon-feature" style="color: var(--theme-color);"></i>
+            <h3 style="font-size: 18px; font-weight: 700; color: var(--theme-color); margin-bottom: 8px; letter-spacing: -0.02em;">대표 수상 이력</h3>
+            <p style="font-size: 13.5px; line-height: 2.2; color: #101114; font-weight: 500; letter-spacing: -0.01em;">
+              • 2025 한벚재단 20년 지속 기부 감사장<br>
+              • 2024 대한민국 국회의원 표창장 수훈<br>
+              • 2023 하남시장 공식 감사장 수상
+            </p>
+          </div>
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-intro"
+      },
+      {
+        "title": "청귤청 소개",
+        "html": `
+      <div style="display: flex; gap: 40px; width: 100%; height: 460px; align-items: stretch;">
+        <div style="flex: 1.1; display: flex; flex-direction: column; gap: 16px; height: 460px;">
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center; background: var(--theme-bg-soft); border: 2px solid var(--theme-color);">
+            <i data-lucide="sparkles" class="slide-icon-hero"></i>
+            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);">오늘의 수제청 만들기</h3>
+            <p class="card-text" style="font-size: 15.5px; line-height: 1.7; color: #101114;">
+              오늘은 <strong>무농약 청귤</strong>과 <strong>비정제 원당</strong>으로 청귤청을 만들어 보겠습니다.
+            </p>
+          </div>
+          <div class="card" style="margin: 0; opacity: 1; transform: none; animation: none; flex: 1; text-align: left; padding: 24px; display: flex; flex-direction: column; justify-content: center;">
+            <i data-lucide="leaf" class="slide-icon-hero"></i>
+            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--theme-color);">자연 그대로의 건강한 재료</h3>
+            <p class="card-text" style="font-size: 15px; line-height: 1.7; color: #101114;">
+              농약, 제초제 등을 사용하지 않아 덕지가 붙어 있지만 <strong>더 건강한 청귤</strong>, 첨가물 없이 정제하지 않고 사탕수수 즙으로 만든 <strong>원당</strong>을 재료로 <strong>청귤청을 함께 만들어 보아요.</strong>
+            </p>
+          </div>
+        </div>
+        <div style="flex: 0.9; border-radius: 16px; overflow: hidden; border: 1px solid #dedee5; background: transparent; padding: 0; height: 460px; display: flex; justify-content: center; align-items: center;">
+          <img src="images/cheongyul_intro.png" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-1"
+      },
+      {
+        "title": "청귤 1kg과 원당 1.2kg을 준비한다.",
+        "html": `
+      <div style="display: flex; gap: 36px; width: 100%; height: 460px; align-items: stretch;">
+        <div style="flex: 1.2; display: flex; flex-direction: column; justify-content: center; gap: 14px; height: 460px;">
+          <div style="display: flex; gap: 12px;">
+            <div style="flex: 1; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 14px;">
+              <div style="width: 42px; height: 42px; border-radius: 10px; background: var(--theme-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">1</div>
+              <div>
+                <div style="font-size: 12px; color: var(--theme-color); font-weight: 700; margin-bottom: 2px;">핵심 주재료 ①</div>
+                <div style="font-size: 18px; font-weight: 800; color: #101114;">무농약 청귤 <span style="color: var(--theme-color);">1kg</span></div>
+              </div>
+            </div>
+            <div style="flex: 1; background: var(--theme-bg-soft); border: 2px solid var(--theme-color); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; gap: 14px;">
+              <div style="width: 42px; height: 42px; border-radius: 10px; background: var(--theme-color); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800;">1.2</div>
+              <div>
+                <div style="font-size: 12px; color: var(--theme-color); font-weight: 700; margin-bottom: 2px;">핵심 주재료 ②</div>
+                <div style="font-size: 18px; font-weight: 800; color: #101114;">비정제 원당 <span style="color: var(--theme-color);">1.2kg</span></div>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 700; color: #686b82; margin-top: 2px; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="wrench" style="width: 17px; height: 17px;"></i> 세척 및 보관 준비 도구
+          </h3>
+          <div class="ing-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px;">
+            <div class="ing-item" style="padding: 10px 14px;"><i data-lucide="check-circle-2"></i> 베이킹 소다 (세척용)</div>
+            <div class="ing-item" style="padding: 10px 14px;"><i data-lucide="check-circle-2"></i> 키친타올 (물기제거용)</div>
+            <div class="ing-item" style="padding: 10px 14px;"><i data-lucide="check-circle-2"></i> 소독된 밀폐 유리병</div>
+            <div class="ing-item" style="padding: 10px 14px;"><i data-lucide="check-circle-2"></i> 도마 & 슬라이스용 칼</div>
+          </div>
+
+          <div style="padding: 13px 18px; background: #f4f4f7; border-left: 4px solid var(--theme-color); border-radius: 8px; margin-top: 2px;">
+            <p style="font-size: 13.5px; line-height: 1.6; color: #101114;">
+              💡 <strong>1 : 1.2 황금 비율</strong>: 청귤의 새콤한 산미를 완화하고 100일 이상 장기 저온 숙성을 위해 <strong>청귤 1 : 원당 1.2</strong>의 최적 비율로 배합합니다.
+            </p>
+          </div>
+        </div>
+        <div style="flex: 0.8; border-radius: 16px; overflow: hidden; border: 1px solid #dedee5; background: #f4f4f7; height: 460px; display: flex; justify-content: center; align-items: center;">
+          <img src="images/ingredients.png" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-1"
+      },
+      {
+        "title": "[1단계] 베이킹 소다로 청귤 씻기",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 01</span>
+              <span class="step-sub-badge">청귤 세척</span>
+            </div>
+            <h2 class="step-main-title">
+              물에 베이킹 소다를 풀고<br>청귤을 손으로 문질러 깨끗이 씻어줍니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 베이킹 소다수 세척</span>
+              <span class="step-tag"><i data-lucide="sparkles"></i> 표면 먼지·이물질 제거</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              무농약 청귤은 표면에 덕지나 먼지가 묻어 있을 수 있으므로, 넉넉한 물에 베이킹 소다를 풀어 표면을 골고루 비벼가며 깨끗하게 씻어냅니다.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step1_wash.png" alt="베이킹 소다 청귤 세척">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[2단계] 키친타올로 물기 제거하기",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 02</span>
+              <span class="step-sub-badge">물기 제거</span>
+            </div>
+            <h2 class="step-main-title">
+              깨끗이 헹군 청귤을 키친타올로<br>겉면의 물기를 완벽히 닦아냅니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 키친타올 꼼꼼 건조</span>
+              <span class="step-tag"><i data-lucide="shield-alert"></i> 곰팡이·부패 방지 (수분 0%)</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              껍질 표면에 물기가 조금이라도 남아있으면 보관 과정에서 곰팡이나 부패가 발생할 수 있습니다. 물기가 전혀 없도록 구석구석 꼼꼼하게 닦아내 주세요.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step2_dry.png" alt="물기 제거">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[3단계] 꼭지와 배꼽 제거하기",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 03</span>
+              <span class="step-sub-badge">끝부분 손질</span>
+            </div>
+            <h2 class="step-main-title">
+              쓴맛의 원인이 되는 청귤의<br>양쪽 끝부분(꼭지와 배꼽)을 잘라냅니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 양쪽 꼭지·배꼽 절단</span>
+              <span class="step-tag"><i data-lucide="shield-check"></i> 쓴맛 유발 흰 껍질 차단</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              꼭지와 배꼽 부위의 두꺼운 흰색 껍질 부분은 숙성 후 청에서 쓴맛을 유발하므로 과육이 살짝 보일 정도로 단정하게 잘라내 줍니다.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step3_trim.png" alt="꼭지 및 배꼽 제거">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[4단계] 청귤 슬라이스하기 (0.2~0.3cm)",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 04</span>
+              <span class="step-sub-badge">슬라이스</span>
+            </div>
+            <h2 class="step-main-title">
+              손질된 청귤을 0.2~0.3cm 정도의<br>일정한 두께로 얇게 슬라이스합니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 0.2~0.3cm 균일 두께</span>
+              <span class="step-tag"><i data-lucide="sparkles"></i> 균일 과즙 추출 & 원당 침투</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              일정한 두께로 썰어야 원당이 골고루 침투하고 청귤의 향긋한 과즙이 균일하게 우러납니다. 칼을 다룰 때는 손을 조심하며 얇게 썰어주세요.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step4_slice.png" alt="청귤 슬라이스">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[5단계] 볼에 청귤과 원당 혼합하기",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 05</span>
+              <span class="step-sub-badge">원당 혼합</span>
+            </div>
+            <h2 class="step-main-title">
+              넓은 믹싱볼에 슬라이스한 청귤과<br>비정제 원당을 넣고 골고루 버무립니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 청귤 1 : 원당 1.2 황금비율</span>
+              <span class="step-tag"><i data-lucide="sparkles"></i> 과육 보호 살살 버무리기</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              청귤 슬라이스가 부서지거나 뭉개지지 않도록 주걱이나 장갑 낀 손으로 아래에서 위로 살살 뒤섞으며 원당이 과육 전체에 묻도록 섞어줍니다.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step5_mix.png" alt="청귤과 원당 혼합">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[6단계] 원당 결정이 녹을 때까지 섞기",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 06</span>
+              <span class="step-sub-badge">원당 녹이기</span>
+            </div>
+            <h2 class="step-main-title">
+              원당 결정이 충분히 녹을 때까지<br>시간을 두고 저어가며 녹여줍니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 비정제 원당 완전 용해</span>
+              <span class="step-tag"><i data-lucide="sparkles"></i> 볼 안에서 완전 시럽화</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 체크 포인트
+            </div>
+            <p class="step-tip-text">
+              비정제 원당은 정제 설탕보다 입자가 커서 녹는 데 시간이 걸립니다. 바로 병에 넣지 않고 볼에서 원당이 완전히 녹아 시럽화될 때까지 기다립니다.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step6_dissolve.png" alt="원당 녹이기">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "[7단계] 소독 용기 포장 및 냉장 숙성",
+        "html": `
+      <div class="step-container">
+        <div class="step-text-box">
+          <div>
+            <div class="step-header-row">
+              <span class="step-badge">STEP 07</span>
+              <span class="step-sub-badge">병입 및 숙성</span>
+            </div>
+            <h2 class="step-main-title">
+              열탕 소독한 유리병에 청귤을 담고<br>청이 푹 잠길 정도로 부어 밀봉합니다.
+            </h2>
+            <div class="step-tags">
+              <span class="step-tag"><i data-lucide="check-circle-2"></i> 열탕 소독 밀폐용기</span>
+              <span class="step-tag"><i data-lucide="clock"></i> 냉장 보관 100일 저온 숙성</span>
+            </div>
+          </div>
+          <div class="step-tip-card">
+            <div class="step-tip-header">
+              <i data-lucide="lightbulb"></i> 보관 및 숙성 가이드
+            </div>
+            <p class="step-tip-text">
+              청귤이 공기 중에 노출되면 변질될 수 있으므로 청 시럽으로 푹 덮어줍니다.<br>
+              <strong>보관 및 숙성</strong>: 반드시 냉장 보관하며, 100일간 저온 숙성하면 쓴맛이 사라지고 최상의 깊은 맛이 완성됩니다.
+            </p>
+          </div>
+        </div>
+        <div class="step-image-box">
+          <img src="images/step7_pack.png" alt="병입 및 냉장 숙성">
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-2"
+      },
+      {
+        "title": "청귤청 완성 및 음용법",
+        "html": `
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <div style="display: flex; gap: 32px; width: 1000px; justify-content: center; margin-bottom: 20px;">
+          <div style="border-radius: 16px; overflow:hidden; border: 1px solid #dedee5; width: 620px; height: 320px; background: transparent; padding: 0; display:flex; justify-content:center; align-items:center;">
+            <img src="images/cheongyul_hero.jpg" style="width:100%; height:100%; object-fit: cover;">
+          </div>
+        </div>
+        <div class="conclusion" style="padding: 20px 32px; width: 1000px;">
+          <h3 class="conclusion-line" style="font-size: 22px; color: var(--theme-color);">향긋하고 상큼달콤한 수제 청귤청 완성!</h3>
+          <p style="font-size: 15px; color: #686b82; margin-top: 8px; line-height: 1.6;">
+            🍹 <strong>청귤 에이드</strong>: 유리잔에 얼음과 청귤청 2~3스푼을 넣고 탄산수를 부어 시원하게 즐겨보세요.<br>
+            ☕ <strong>따뜻한 청귤차</strong>: 찻잔에 청귤청을 넣고 따뜻한 온수를 부어 향긋한 비타민 가득 힐링 티로 드세요.
+          </p>
+        </div>
+      </div>
+    `,
+        "sectionClass": "section-outro"
+      }
+    ];
+
+    let currentIdx = -1;
+
+    const hubView = document.getElementById('hub-view');
+    const slideView = document.getElementById('slide-view');
+    const slideTitle = document.getElementById('active-slide-title');
+    const slideContent = document.getElementById('active-slide-content');
+    const prevBtn = document.getElementById('nav-prev-btn');
+    const nextBtn = document.getElementById('nav-next-btn');
+    const hubBtn = document.getElementById('nav-hub-btn');
+
+    function renderHub() {
+      currentIdx = -1;
+
+      slideView.style.display = 'none';
+      slideView.classList.remove('active');
+
+      hubView.style.display = 'block';
+      document.body.style.overflow = 'auto';
+      window.scrollTo(0, 0);
+
+      setTimeout(() => {
+        hubView.classList.add('active');
+      }, 10);
+    }
+
+    function renderSlide(idx) {
+      if (idx < 0 || idx >= slidesData.length) {
+        renderHub();
+        return;
+      }
+
+      currentIdx = idx;
+
+      hubView.style.display = 'none';
+      hubView.classList.remove('active');
+
+      const slide = slidesData[idx];
+      slideTitle.textContent = slide.title;
+      slideContent.innerHTML = slide.html;
+
+      slideView.className = 'view active ' + slide.sectionClass;
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+
+      if (idx === 0) {
+        prevBtn.innerHTML = '<span class="nav-disabled"><i data-lucide="arrow-left" style="width:16px; height:16px;"></i> 이전</span>';
+        prevBtn.href = "#";
+        prevBtn.style.pointerEvents = 'none';
+      } else {
+        prevBtn.innerHTML = '<i data-lucide="arrow-left" style="width:16px; height:16px; display:inline-block; vertical-align:middle;"></i> 이전';
+        prevBtn.href = "#slide-" + idx;
+        prevBtn.style.pointerEvents = 'auto';
+      }
+
+      if (idx === slidesData.length - 1) {
+        nextBtn.innerHTML = '<span class="nav-disabled">다음 <i data-lucide="arrow-right" style="width:16px; height:16px;"></i></span>';
+        nextBtn.href = "#";
+        nextBtn.style.pointerEvents = 'none';
+      } else {
+        nextBtn.innerHTML = '다음 <i data-lucide="arrow-right" style="width:16px; height:16px; display:inline-block; vertical-align:middle;"></i>';
+        nextBtn.href = "#slide-" + (idx + 2);
+        nextBtn.style.pointerEvents = 'auto';
+      }
+
+      hubBtn.textContent = String(idx + 1).padStart(2, '0') + " / " + String(slidesData.length).padStart(2, '0');
+
+      lucide.createIcons();
+
+      slideView.style.display = 'flex';
+      setTimeout(() => {
+        slideView.classList.add('active');
+      }, 10);
+    }
+
+    function handleHashChange() {
+      const hash = location.hash;
+      const match = hash.match(/^#slide-([0-9]+)$/);
+      if (match) {
+        const idx = parseInt(match[1]) - 1;
+        renderSlide(idx);
+      } else {
+        renderHub();
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    document.addEventListener('keydown', (e) => {
+      if (currentIdx === -1) return;
+      if (e.key === 'ArrowRight') {
+        if (currentIdx < slidesData.length - 1) {
+          e.preventDefault();
+          location.hash = "#slide-" + (currentIdx + 2);
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentIdx > 0) {
+          e.preventDefault();
+          location.hash = "#slide-" + currentIdx;
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        location.hash = "";
+      }
+    });
+
+    hubBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      location.hash = "";
+    });
+
+    handleHashChange();
+  </script>
+</body>
+
+</html>
