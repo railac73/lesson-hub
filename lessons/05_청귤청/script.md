@@ -99,4 +99,4 @@
 🍹 **청귤 에이드**: 유리잔에 얼음과 청귤청 2~3스푼을 넣고 탄산수를 부어 시원하게 즐겨보세요.  
 ☕ **따뜻한 청귤차**: 찻잔에 청귤청을 넣고 따뜻한 온수를 부어 향긋한 비타민 가득 힐링 티로 드세요.
 
-![Slide 12 Image](images/cheongyul_hero.jpg)
+![Slide 12 Image](images/cheongyul_hero_v2.jpg)
