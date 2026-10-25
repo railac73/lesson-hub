@@ -1,7 +1,14 @@
 /* ====================================================
-   공통 교육자료 스타일시트
+   공통 교육자료 베이스 스타일시트
    ws_han/common/css/style.css
-   모든 교육자료 HTML에서 ../../common/css/style.css 로 참조
+
+   [강의별 전용 스타일시트 분리 현황]
+   - 01_곰돌이_마들렌      : common/css/style_01.css
+   - 02_감자샐러드_샌드위치: common/css/style_02.css (Pretendard 폰트 포함 독자 템플릿)
+   - 03_오픈 단팥빵        : common/css/style_03.css
+   - 04_보우짱_크럼블_머핀  : common/css/style_04.css
+   - 05_청귤청             : common/css/style_05.css
+   - 06_고구마_크럼블 머핀  : common/css/style_06.css
    ==================================================== */
 
 /* === 폰트 === */

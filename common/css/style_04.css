@@ -1,0 +1,426 @@
+/* ====================================================
+   04_보우짱_크럼블_머핀 전용 스타일시트
+   ws_han/common/css/style_04.css
+   ==================================================== */
+
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ffffff;
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      color: #101114;
+      min-height: 100vh;
+    }
+
+    /* SPA View controller */
+    .view {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .view.active {
+      display: block;
+      opacity: 1;
+    }
+
+    #slide-view.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* HUB VIEW STYLING */
+    #hub-view {
+      width: 1280px;
+      margin: 0 auto;
+      padding: 60px 80px 80px;
+    }
+
+    .page-title {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #7132f5;
+      text-align: center;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #686b82;
+      margin-bottom: 50px;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-left: 4px solid;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-range {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease-out;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card:active {
+      transform: scale(0.97);
+    }
+
+    .card .card-num {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .card .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #101114;
+      line-height: 1.4;
+    }
+
+    .card .card-file {
+      font-size: 11px;
+      color: #9497a9;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: auto;
+    }
+
+    /* === 섹션별 색상 CSS 패턴 (허브 뷰 및 슬라이드 연계 컬러 변수) === */
+    .section-intro .section-header {
+      border-color: #7132f5;
+      color: #7132f5;
+    }
+
+    .section-intro .num-range {
+      background: #7132f5;
+    }
+
+    .section-intro .card:hover {
+      border-color: #7132f5;
+      box-shadow: rgba(113, 50, 245, 0.12) 0px 8px 24px;
+    }
+
+    .section-intro .card .card-num {
+      color: #7132f5;
+    }
+
+    .section-1 .section-header {
+      border-color: #686b82;
+      color: #4b4d5f;
+    }
+
+    .section-1 .num-range {
+      background: #686b82;
+    }
+
+    .section-1 .card:hover {
+      border-color: #686b82;
+      box-shadow: rgba(104, 107, 130, 0.12) 0px 8px 24px;
+    }
+
+    .section-1 .card .card-num {
+      color: #686b82;
+    }
+
+    .section-2 .section-header {
+      border-color: #149e61;
+      color: #026b3f;
+    }
+
+    .section-2 .num-range {
+      background: #149e61;
+    }
+
+    .section-2 .card:hover {
+      border-color: #149e61;
+      box-shadow: rgba(20, 158, 97, 0.12) 0px 8px 24px;
+    }
+
+    .section-2 .card .card-num {
+      color: #149e61;
+    }
+
+    .section-outro .section-header {
+      border-color: #7132f5;
+      color: #7132f5;
+    }
+
+    .section-outro .num-range {
+      background: linear-gradient(90deg, #7132f5, #855bfb);
+    }
+
+    .section-outro .card:hover {
+      border-color: #7132f5;
+      box-shadow: rgba(113, 50, 245, 0.15) 0px 8px 24px;
+    }
+
+    .section-outro .card .card-num {
+      color: #7132f5;
+    }
+
+    /* === 슬라이드 뷰 섹션 연계 테마 변수 === */
+    #slide-view.section-intro {
+      --theme-color: #7132f5;
+      --theme-bg-soft: rgba(113, 50, 245, 0.05);
+    }
+
+    #slide-view.section-1 {
+      --theme-color: #686b82;
+      --theme-bg-soft: rgba(104, 107, 130, 0.05);
+    }
+
+    #slide-view.section-2 {
+      --theme-color: #149e61;
+      --theme-bg-soft: rgba(20, 158, 97, 0.05);
+    }
+
+    #slide-view.section-outro {
+      --theme-color: #7132f5;
+      --theme-bg-soft: rgba(113, 50, 245, 0.05);
+    }
+
+    /* SLIDE VIEW STYLING */
+    .container {
+      width: 1280px;
+      height: 100%;
+      padding: 30px 80px 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title {
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--theme-color);
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .slide-icon-hero {
+      width: 44px !important;
+      height: 44px !important;
+      stroke-width: 1.5 !important;
+      color: var(--theme-color) !important;
+      margin-bottom: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .slide-icon-feature {
+      width: 36px !important;
+      height: 36px !important;
+      stroke-width: 1.5 !important;
+      color: var(--theme-color) !important;
+      margin-bottom: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    /* Step Layout Styling */
+    .step-container {
+      display: flex;
+      gap: 36px;
+      width: 100%;
+      height: 460px;
+      align-items: center;
+    }
+
+    .step-text-box {
+      flex: 1;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 16px;
+      padding: 36px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .step-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      background: var(--theme-color);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .step-description {
+      font-size: 19px;
+      line-height: 1.7;
+      color: #101114;
+      font-weight: 500;
+    }
+
+    .step-image-box {
+      flex: 1.1;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+    }
+
+    .step-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ingredients Grid */
+    .ing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    .ing-item {
+      background: #f4f4f7;
+      border: 1px solid #dedee5;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #101114;
+    }
+
+    .ing-item i {
+      color: var(--theme-color);
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Conclusion box */
+    .conclusion {
+      background: var(--theme-bg-soft);
+      border: 2px solid var(--theme-color);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    /* Navigation */
+    .slide-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid #dedee5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: 'IBM Plex Sans', 'Noto Sans KR', sans-serif;
+    }
+
+    .slide-nav-inner {
+      width: 1280px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+    }
+
+    .slide-nav a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #7132f5;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-nav a:hover {
+      color: #5741d8;
+    }
+
+    .slide-nav .nav-disabled {
+      font-size: 14px;
+      font-weight: 600;
+      color: #dedee5;
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .slide-nav .nav-center a {
+      color: #686b82;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .slide-nav .nav-center a:hover {
+      color: #101114;
+    }
